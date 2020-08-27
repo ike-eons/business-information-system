@@ -18,6 +18,7 @@ class CreateTransactionsTable extends Migration
             $table->string('invoice_or_stock');
             $table->string('number')->unique();
             $table->double('amount');
+            $table->date('date');
             $table->timestamps();
         });
     }

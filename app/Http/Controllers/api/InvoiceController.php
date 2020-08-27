@@ -70,10 +70,12 @@ class InvoiceController extends Controller
 
         }
 
+        //UPDATE TRANSACTIONS TABLE
         DB::table('transactions')->insert([
             'invoice_or_stock' => 'invoice',
             'number' => $invoice['counter_number'],
             'amount' => $invoice['total'],
+            'date'  => $invoice['date']
             // 'create_at' => Carbon::now()
         ]);
 

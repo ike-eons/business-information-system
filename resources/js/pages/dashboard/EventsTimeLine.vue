@@ -6,11 +6,11 @@
         :headers="headers"
         :items="transactions"
         sort-by="text"
-        class="elevation-1 strip-table"
+        class="elevation-5 strip-table"
       >
         <template v-slot:top>
-          <v-toolbar flat elevation-1 color="#d1d1d1" class="lighten-2">
-            <v-toolbar-title >Events Timeline</v-toolbar-title>
+          <v-toolbar flat elevation-1 color="teal darken-1" dark class="lighten-2">
+            <v-toolbar-title >Transaction Timeline</v-toolbar-title>
             <v-divider
               class="mx-5"
               inset
@@ -55,6 +55,12 @@ import Api from '../../service/api.js'
           align: 'left',
           sortable: true,
           value: 'amount',
+        },
+        {
+          text: 'Date',
+          align: 'left',
+          sortable: true,
+          value: 'date',
         },
         // { text: 'Actions',align:'center', value: 'actions', sortable: false },
       ],

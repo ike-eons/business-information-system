@@ -1,53 +1,84 @@
 <template>
   <!-- <v-content> -->
     <v-container class="pa-1" fluid>
-      <v-row>
+      <!-- <v-row>
         <v-col xs="12">
-          <h2 class="display-1 mb-1 pl-5 pt-2">
+          <h2 class="display-1 pl-5 pt-1">
               Dashboard
           </h2>
         </v-col>
-      </v-row>
-
+      </v-row> -->
+  
+      <!-- Cards  -->
       <v-row class="ma-3">
 
+        <!-- customer card -->
         <v-col cols="12" xs="12" sm="6" md="3">
-         <v-card>
-          <v-card-text>
-            <p class="text-xs-center h3">{{customers.length}}</p>
-            <p class="text-xs-center">Customers</p>
-          </v-card-text>
-        </v-card> 
+           <v-card color="green lighten-1" class="justify-center pt-4" shaped dark max-height="300px">
+             <card-title >
+             <div>
+               <p class="font-weight-bold text-center"><v-icon>perm_identity</v-icon> Cutomers</p>
+               
+               <p class="text-center h3 font-weight-light">{{customers.length}}</p>
+             </div>
+             </card-title>
+             <v-card-actions class="justify-center green darken-1">
+              <p>more info <span><v-icon small>fa-arrow-alt-circle-right</v-icon></span></p>
+            </v-card-actions>
+            </v-card>
         </v-col>
 
+        <!-- invoice generated -->
         <v-col cols="12" xs="12" sm="6" md="3">
-         <v-card>
-          <v-card-text>
-            <p class="text-xs-center h3">{{invoices.length}}</p>
-            <p class="text-xs-center">Invoice Generated</p>
-          </v-card-text>
-        </v-card> 
+           <v-card color="orange lighten-1" class="justify-center pt-4" shaped dark max-height="300px">
+             <card-title >
+             <div>
+               <p class="font-weight-bold text-center"><v-icon>content_copy</v-icon> Invoices</p>
+               
+               <p class="text-center h3 font-weight-light">{{customers.length}}</p>
+             </div>
+             </card-title>
+             <v-card-actions class="justify-center orange darken-1">
+              <p>more info <span><v-icon small>fa-arrow-alt-circle-right</v-icon></span></p>
+            </v-card-actions>
+            </v-card>
+        </v-col>
+         
+        <!-- inventory total card -->
+        <v-col cols="12" xs="12" sm="6" md="3">
+           <v-card color="teal lighten-1" class="justify-center pt-4" shaped dark max-height="300px">
+             <card-title >
+             <div>
+               <p class="font-weight-bold text-center"><v-icon>trending_up</v-icon> Inventory Amount</p>
+               
+               <p class="text-center h3 font-weight-light">GH¢ {{inventory.total_inventory|formatMoney}}</p>
+             </div>
+             </card-title>
+             <v-card-actions class="justify-center teal darken-1">
+              <p>more info <span><v-icon small>fa-arrow-alt-circle-right</v-icon></span></p>
+            </v-card-actions>
+            </v-card>
         </v-col>
 
-        <v-col cols="12" xs="12" sm="6" md="3">
-         <v-card>
-          <v-card-text>
-            <p class="text-xs-center h3">GH¢{{inventory.total_inventory|formatMoney}}</p>
-            <p class="text-xs-center">Inventory Amount</p>
-          </v-card-text>
-        </v-card> 
-        </v-col>
-
-        <v-col cols="12" xs="12" sm="6" md="3">
-         <v-card>
-          <v-card-text>
-            <p class="text-xs-center h3">{{inventory.total_quantity}}</p>
-            <p class="text-xs-center">Inventory Quantity</p>
-          </v-card-text>
-        </v-card> 
+          <!-- inventory quantity -->
+         <v-col cols="12" xs="12" sm="6" md="3">
+           <v-card color="red lighten-1" class="justify-center pt-4" shaped dark max-height="300px">
+             <card-title >
+             <div>
+               <p class="font-weight-bold text-center"><v-icon>layers</v-icon> Inventory Quantity</p>
+               
+               <p class="text-center h3 font-weight-light">{{inventory.total_quantity}}</p>
+             </div>
+             </card-title>
+             <v-card-actions class="justify-center red darken-1">
+              <p>more info <span><v-icon small>fa-arrow-alt-circle-right</v-icon></span></p>
+            </v-card-actions>
+            </v-card>
         </v-col>
 
       </v-row>
+      <!-- end of cards -->
+
       <v-row class="mx-3">
         <EventsTimeLine/>
       </v-row>
@@ -75,12 +106,14 @@
 import EventsTimeLine from './EventsTimeLine';
 import StockGraph from './StockGraph'
 import DailySalesGraph from './DailySalesGraph'
+import CardStats from './CardStats.vue'
 import Api from '../../service/api.js'
 
 export default {
   components:{
     EventsTimeLine,
     StockGraph,
+    CardStats,
     DailySalesGraph
   },
   data(){
@@ -109,5 +142,9 @@ export default {
 </script>
 
 <style scoped>
-
+.one-line {
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 </style>

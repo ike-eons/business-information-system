@@ -98,7 +98,7 @@ export default new Router({
     },
 
     {
-        path: '/pagenotfound',
+        path: '*',
         component:PageNotFound
     },
 

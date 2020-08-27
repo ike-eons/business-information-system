@@ -97,7 +97,8 @@ class StockController extends Controller
         DB::table('transactions')->insert([
             'invoice_or_stock' => 'stock',
             'number'    =>  $stock['counter_number'],
-            'amount'    => $stock['total']
+            'amount'    => $stock['total'],
+            'date'      => $stock['date']
         ]);
 
         return response()
