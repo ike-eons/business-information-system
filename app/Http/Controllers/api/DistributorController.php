@@ -29,8 +29,8 @@ class DistributorController extends Controller
         $request->validate([
             'company_name' => 'required',
             'address'   => 'required',
-            'phone'     => 'required|distributors:unique|regex:/(0)[0-9]{9}/',
-            'email'     => 'required|distributors:unique|email'
+            'phone'     => 'required|unique:distributors|regex:/(0)[0-9]{9}/',
+            'email'     => 'required|unique:distributors|email'
         ]);
 
         $distributor = Distributor::create($request->all());

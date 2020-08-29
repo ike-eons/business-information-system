@@ -36,7 +36,7 @@
 
       <v-list dense shaped nav class="clickable">
         <template v-for="item in items">
-          <v-list-group
+          <v-list-group color="red"
           v-if="item.children"
           :key="item.text"
           v-model="item.model"
@@ -122,7 +122,7 @@
 
       </v-app-bar> color="#009688" -->
         <!-- APP BAR -->
-    <v-app-bar app color="#009688" dark>
+    <v-app-bar app color="teal darken-2" dark>
       <v-app-bar-nav-icon @click.stop="miniVariant = !miniVariant" class="clickable"></v-app-bar-nav-icon>
       <v-toolbar-title
         style="width: 300px"
@@ -156,7 +156,7 @@ export default {
           {icon:'dashboard', text:'System Statistics', route:'/app'},
           {icon:'receipt', text:'Invoice', route:'/invoices'},
           {icon:'assignment_ind', text:'Customers', route:'/customers'},
-          {icon:'card_membership', text:'Brand', route:'/brands'},
+          {icon:'spa', text:'Brand', route:'/brands'},
           {icon:'card_membership', text:'Distributors', route:'/distributors'},
           {icon:'category', text:'Categories', route:'/categories'},
           {icon:'eco', text:'Products', route:'/products'},
@@ -192,6 +192,9 @@ export default {
 </script>
 
 <style>
+  .v-list-item--active{
+    background-color:#00564c;
+  }
  .style-type{
     text-decoration: none !important;
  }

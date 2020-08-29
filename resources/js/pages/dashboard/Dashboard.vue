@@ -15,13 +15,13 @@
         <!-- customer card -->
         <v-col cols="12" xs="12" sm="6" md="3">
            <v-card color="green lighten-1" class="justify-center pt-4" shaped dark max-height="300px">
-             <card-title >
+             <div>
              <div>
                <p class="font-weight-bold text-center"><v-icon>perm_identity</v-icon> Cutomers</p>
                
                <p class="text-center h3 font-weight-light">{{customers.length}}</p>
              </div>
-             </card-title>
+             </div>
              <v-card-actions class="justify-center green darken-1">
               <p>more info <span><v-icon small>fa-arrow-alt-circle-right</v-icon></span></p>
             </v-card-actions>
@@ -31,13 +31,13 @@
         <!-- invoice generated -->
         <v-col cols="12" xs="12" sm="6" md="3">
            <v-card color="orange lighten-1" class="justify-center pt-4" shaped dark max-height="300px">
-             <card-title >
+             <div >
              <div>
                <p class="font-weight-bold text-center"><v-icon>content_copy</v-icon> Invoices</p>
                
                <p class="text-center h3 font-weight-light">{{customers.length}}</p>
              </div>
-             </card-title>
+             </div>
              <v-card-actions class="justify-center orange darken-1">
               <p>more info <span><v-icon small>fa-arrow-alt-circle-right</v-icon></span></p>
             </v-card-actions>
@@ -47,13 +47,13 @@
         <!-- inventory total card -->
         <v-col cols="12" xs="12" sm="6" md="3">
            <v-card color="teal lighten-1" class="justify-center pt-4" shaped dark max-height="300px">
-             <card-title >
+             <div >
              <div>
                <p class="font-weight-bold text-center"><v-icon>trending_up</v-icon> Inventory Amount</p>
                
                <p class="text-center h3 font-weight-light">GH¢ {{inventory.total_inventory|formatMoney}}</p>
              </div>
-             </card-title>
+             </div>
              <v-card-actions class="justify-center teal darken-1">
               <p>more info <span><v-icon small>fa-arrow-alt-circle-right</v-icon></span></p>
             </v-card-actions>
@@ -63,13 +63,13 @@
           <!-- inventory quantity -->
          <v-col cols="12" xs="12" sm="6" md="3">
            <v-card color="red lighten-1" class="justify-center pt-4" shaped dark max-height="300px">
-             <card-title >
+             <div >
              <div>
                <p class="font-weight-bold text-center"><v-icon>layers</v-icon> Inventory Quantity</p>
                
                <p class="text-center h3 font-weight-light">{{inventory.total_quantity}}</p>
              </div>
-             </card-title>
+             </div>
              <v-card-actions class="justify-center red darken-1">
               <p>more info <span><v-icon small>fa-arrow-alt-circle-right</v-icon></span></p>
             </v-card-actions>
