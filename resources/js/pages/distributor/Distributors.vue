@@ -91,21 +91,21 @@
         </template>
         <template v-slot:item.actions="{ item }">
           <v-icon
-            small
+            small color="teal darken-2"
             class="mr-2"
             @click="editItem(item)"
           >
             mdi-pencil
           </v-icon>
-          <v-icon
-            small
+          <v-icon 
+            small color="red darken-2"
             @click="deleteItem(item)"
           >
             mdi-delete
           </v-icon>
         </template>
         <template v-slot:no-data>
-          <v-btn color="teal" dark @click="distributors">Reset</v-btn>
+          <v-btn color="teal darken-2" dark @click="distributors">Reset</v-btn>
         </template>
       </v-data-table>
       </v-col>
@@ -115,7 +115,7 @@
 
 <script>
 import Api from '../../service/api.js'
-import { required, minLength, email, numeric,alphaNum } from 'vuelidate/lib/validators'
+import { required, minLength, email, numeric } from 'vuelidate/lib/validators'
 import { min } from 'moment';
 
   export default {

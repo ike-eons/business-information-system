@@ -9,8 +9,8 @@
         class="elevation-1 strip-table"
       >
         <template v-slot:top>
-          <v-toolbar flat elevation-1 color="#d1d1d1" class="lighten-2">
-            <v-toolbar-title >List of all Categories</v-toolbar-title>
+          <v-toolbar flat elevation-1 color="teal darken-1" dark class="lighten-2">
+            <v-toolbar-title ><v-icon>category</v-icon>&nbsp;CATEGORIES</v-toolbar-title>
             <v-divider
               class="mx-5"
               inset
@@ -22,7 +22,7 @@
 
             <v-dialog v-model="dialog" max-width="500px">
               <template v-slot:activator="{ on }">
-                <v-btn  class="mb-2" v-on="on">
+                <v-btn  class="mb-2 teal--text" color="white" v-on="on">
                   <i class="fa fa-plus" aria-hidden="true"></i>
                     <span>New Category</span>
                 </v-btn>
@@ -37,14 +37,20 @@
                   <v-container>
                     
                     <v-row dense>
-                      
+                      <!-- Categories Form Textfields -->
                       <v-col cols="12">
                         <v-text-field v-model="editedItem.name" label="Category name"
-                            :rules="[required('Category name'),minLength('Category',3)]" />
+                          @input="$v.editedItem.name.$touch()"
+                          @blur="$v.editedItem.name.$touch()"
+                          :error-messages="nameErrors"
+                        />
                       </v-col>
                       <v-col cols="12">
                         <v-text-field v-model="editedItem.description" label="description"
-                            :rules="[required('description'),minLength('description',5)]" />
+                          @input="$v.editedItem.description.$touch()"
+                          @blur="$v.editedItem.description.$touch()"
+                          :error-messages="descriptionErrors"
+                        />
                       </v-col>
                       
                     </v-row>
@@ -55,7 +61,7 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                  <v-btn color="blue darken-1" :disabled="!valid" text @click="save">Save</v-btn>
+                  <v-btn color="blue darken-1" :disabled="$v.$invalid" text @click="save">Save</v-btn>
                 </v-card-actions>
               </v-card>
             
@@ -66,20 +72,20 @@
         <template v-slot:item.actions="{ item }">
           <v-icon
             small
-            class="mr-2"
+            class="mr-2" color="teal darken-2"
             @click="editItem(item)"
           >
             mdi-pencil
           </v-icon>
           <v-icon
-            small
+            small color="red darken-2"
             @click="deleteItem(item)"
           >
             mdi-delete
           </v-icon>
         </template>
         <template v-slot:no-data>
-          <v-btn color="primary" @click="categories">Reset</v-btn>
+          <v-btn color="teal darken-2" dark @click="categories">Reset</v-btn>
         </template>
       </v-data-table>
       </v-col>
@@ -91,7 +97,7 @@
  
 <script>
 
-
+import { required, minLength} from 'vuelidate/lib/validators'
 import Api from '../../service/api.js'
 
   export default {
@@ -119,18 +125,58 @@ import Api from '../../service/api.js'
         name: '',
         description: ''
       },
-      required(propertyType){
-        return v => v && v.length > 0 || ` ${propertyType} is required`
-      },
-      minLength(propertyType,length){
-        return v=> v && v.length >= 3 || `${propertyType} must be equal to ${length} digits`
-      }
+    
     }),
+
+    validations:{
+      editedItem: { 
+        name:{
+          required,
+          minLength:minLength(3),
+          async uniqueName(value){
+            if(value=="") return true
+            
+            const categories = this.categories
+            const name_alreadyExist =
+              categories.find(category=>category.name.toLowerCase() === value.toLowerCase())   
+            if(name_alreadyExist){
+              return false;
+            }
+            return true
+          },
+        },
+        description:{
+          required,
+          minLength:minLength(3)
+        }
+      }
+    },
 
     computed: {
       formTitle () {
         return this.editedIndex === -1 ? 'New Category' : 'Edit Category'
       },
+      nameErrors(){
+        const errors = []
+        if(!this.$v.editedItem.name.$dirty) return errors;
+          !this.$v.editedItem.name.required &&
+            errors.push("Category name is required*") 
+          !this.$v.editedItem.name.minLength &&
+            errors.push("Category name must be atleast 3 characters*")
+          !this.$v.editedItem.name.uniqueName &&
+            errors.push("Category name already Exist*")
+        return errors
+      },
+      descriptionErrors(){
+        const errors = [];
+        if(!this.$v.editedItem.description.$dirty) return errors;
+           !this.$v.editedItem.description.required &&
+            errors.push('Category description is required')
+           !this.$v.editedItem.description.minLength &&
+            errors.push("Category description must be atleast 3 characters*")
+        return errors
+      }
+
     },
 
     watch: {
@@ -172,11 +218,17 @@ import Api from '../../service/api.js'
           Object.assign(this.categories[this.editedIndex], this.editedItem);
           // this.edit_categorie(this.editedItem);
         } else {
+
+          this.$v.$touch();
+          if(!this.$v.$invalid){
+
           let response = await Api().post(`/categories`,this.editedItem);
           this.editedItem.id = response.data.category.id
           
           console.log(this.editedItem)
           this.categories.unshift(this.editedItem) 
+          
+          }
           
         }
         this.close()

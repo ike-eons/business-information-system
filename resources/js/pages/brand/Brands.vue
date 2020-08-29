@@ -79,20 +79,20 @@
         <template v-slot:item.actions="{ item }">
           <v-icon
             small
-            class="mr-2"
+            class="mr-2" color="teal darken-2"
             @click="editItem(item)"
           >
             mdi-pencil
           </v-icon>
           <v-icon
-            small
+            small color="red darken-2"
             @click="deleteItem(item)"
           >
             mdi-delete
           </v-icon>
         </template>
         <template v-slot:no-data>
-          <v-btn color="teal" dark @click="brands">Reset</v-btn>
+          <v-btn color="teal darken-2" dark @click="brands">Reset</v-btn>
         </template>
       </v-data-table>
       </v-col>
