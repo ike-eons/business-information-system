@@ -117,7 +117,9 @@ import Api from '../../service/api.js';
 export default {
   data(){
     return{
-      invoice:{},
+      invoice:{
+        customer:{}
+      },
     }
   },
   created(){

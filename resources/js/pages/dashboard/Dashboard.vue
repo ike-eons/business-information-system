@@ -23,7 +23,7 @@
              </div>
              </div>
              <v-card-actions class="justify-center green darken-1">
-              <p>more info <span><v-icon small>fa-arrow-alt-circle-right</v-icon></span></p>
+              <p><router-link class="more-info" to="/customers">more info <span><v-icon small>fa-arrow-alt-circle-right</v-icon></span></router-link></p>
             </v-card-actions>
             </v-card>
         </v-col>
@@ -35,11 +35,11 @@
              <div>
                <p class="font-weight-bold text-center"><v-icon>content_copy</v-icon> Invoices</p>
                
-               <p class="text-center h3 font-weight-light">{{customers.length}}</p>
+               <p class="text-center h3 font-weight-light">{{invoices.length}}</p>
              </div>
              </div>
              <v-card-actions class="justify-center orange darken-1">
-              <p>more info <span><v-icon small>fa-arrow-alt-circle-right</v-icon></span></p>
+              <p><router-link to="/invoices" class="more-info">more info <span><v-icon small>fa-arrow-alt-circle-right</v-icon></span></router-link></p>
             </v-card-actions>
             </v-card>
         </v-col>
@@ -55,7 +55,7 @@
              </div>
              </div>
              <v-card-actions class="justify-center teal darken-1">
-              <p>more info <span><v-icon small>fa-arrow-alt-circle-right</v-icon></span></p>
+              <p><router-link to="/inventories" class="more-info">more info <span><v-icon small>fa-arrow-alt-circle-right</v-icon></span></router-link></p>
             </v-card-actions>
             </v-card>
         </v-col>
@@ -71,7 +71,7 @@
              </div>
              </div>
              <v-card-actions class="justify-center red darken-1">
-              <p>more info <span><v-icon small>fa-arrow-alt-circle-right</v-icon></span></p>
+              <p><router-link to="/inventories" class="more-info">more info <span><v-icon small>fa-arrow-alt-circle-right</v-icon></span></router-link></p>
             </v-card-actions>
             </v-card>
         </v-col>
@@ -108,6 +108,7 @@ import StockGraph from './StockGraph'
 import DailySalesGraph from './DailySalesGraph'
 import CardStats from './CardStats.vue'
 import Api from '../../service/api.js'
+import moment from 'moment'
 
 export default {
   components:{
@@ -146,5 +147,13 @@ export default {
   overflow: hidden; 
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.more-info{
+  text-decoration: none;
+  color: #fff;
+}
+.more-info:hover{
+  font-weight: bold;
+  font-style: italic;
 }
 </style>

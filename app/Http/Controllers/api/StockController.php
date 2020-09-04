@@ -74,7 +74,7 @@ class StockController extends Controller
         foreach($request->stock_items as $item) {
            $stockItem = new StockItem();
            $stockItem->stock_id = $stock->id;
-           $stockItem->product_id = $item['id'];
+           $stockItem->product_id = $item['product_id'];
            $stockItem->unit_price = $item['unit_price'];
            $stockItem->quantity = $item['quantity'];
            $stockItem->save();

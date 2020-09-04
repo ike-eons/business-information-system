@@ -15,7 +15,7 @@ class CreateInvoicesTable extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('counter_number')->unique();
+            $table->string('counter_number');
             $table->integer('customer_id')->unsigned()->default(1);
             $table->date('date');
             $table->double('total',8,2);

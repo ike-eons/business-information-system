@@ -8,9 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class StockItem extends Model
 {
-    protected $fillable = [
-        'product_id', 'unit_price', 'quantity'
-    ];
+    protected $guarded = [];
     
     public function product()
     {

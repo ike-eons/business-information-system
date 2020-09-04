@@ -19,6 +19,7 @@ import StockForm from '../pages/stock/StockForm';
 import ShowStock from '../pages/stock/ShowStock';
 import InvoiceForm from '../pages/invoice/InvoiceForm';
 import ShowInvoice from '../pages/invoice/ShowInvoice';
+import Inventories from '../pages/inventory/Inventories';
 
 
 Vue.use(Router);
@@ -95,6 +96,11 @@ export default new Router({
         path:'/stocks/:id',
         component:ShowStock,
         name:'showStock'
+    },
+    {
+        path:'/inventories',
+        component: Inventories,
+        name:'inventories'
     },
 
     {

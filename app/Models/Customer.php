@@ -21,4 +21,8 @@ class Customer extends Model
     {
         return $this->hasMany(Invoice::class);
     }
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

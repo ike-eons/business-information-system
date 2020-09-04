@@ -50,7 +50,7 @@ class CustomerController extends Controller
    
     public function show($id)
     {
-        $customer = Customer::with(['invoices'])->findOrFail($id);
+        $customer = Customer::with(['invoices','payments'])->findOrFail($id);
 
         return ['customer'=>$customer];
     }

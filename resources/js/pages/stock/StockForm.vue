@@ -9,7 +9,7 @@
             <v-row class="pa-0">
                 <v-col cols="12" xs="12" sm="12" md="6"> 
                     <v-autocomplete
-                    v-model="distributor"
+                    v-model="stock.distributor"
                     :items="distributors"
                     :return-object="true"
                     item-text="company_name"
@@ -19,7 +19,11 @@
                     dense
                     solo
 
-                    hint="list of all distributors"
+                    hint="Select a distributors"
+
+                    @blur="$v.stock.distributor.$touch()"
+                    @input="$v.stock.distributor.$touch()"
+                    :error-messages="distributorErrors"
                 >
                 </v-autocomplete>
                 </v-col>
@@ -86,16 +90,16 @@
                      
             </v-row>
             <v-divider></v-divider>
-             <v-row v-for="(item, index) in stock.stock_items" 
-                   :key="item.product_id" dense     
+            <v-row v-for="(item, index) in $v.stock.stock_items.$each.$iter" 
+                :key="item.product_id" dense     
             >
                 <v-col cols="1">
-                    {{ index+1 }}
+                    {{ parseInt(index)+1 }}
                 </v-col>
                 <v-col cols="6">
                     <v-autocomplete
                         :items="products"
-                        v-model="stock.stock_items[index]"
+                        v-model="stock.stock_items[parseInt(index)].product"
                         item-text="description"
                         item-value="id"
                         :return-object="true"
@@ -106,6 +110,10 @@
                         solo
                         hint="list of all products"
                         hide-selected
+
+                         @input="$v.stock.stock_items.$each[parseInt(index)].product.$touch()"
+                        @blur="$v.stock.stock_items.$each[parseInt(index)].product.$touch()"
+                        :error-messages="productErrors"
                     >
                     </v-autocomplete>
                 </v-col>
@@ -116,6 +124,9 @@
                         min="1"
                         dense
                         filled
+                        @input="$v.stock.stock_items.$each[parseInt(index)].quantity.$touch()"
+                        @blur="$v.stock.stock_items.$each[parseInt(index)].quantity.$touch()"
+                        :error-messages="quantityErrors"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="2">
@@ -123,8 +134,7 @@
                         type="number"
                         min="1"
                         v-model="stock.stock_items[index].unit_price = 
-                            stock.stock_items[index].quantity * stock.stock_items[index].stock_price"
-                        filled
+                            stock.stock_items[index].quantity * stock.stock_items[index].product['stock_price']"
                         dense
                         readonly
                     />
@@ -148,7 +158,7 @@
                         <i class="fa fa-plus"> </i> 
                         new product
                     </v-btn> -->
-                <v-btn class="mx-2" fab dark color="indigo" @click="add_row">
+                <v-btn class="mx-2" fab dark color="indigo" @click="add_row()">
                     <v-icon dark>mdi-plus</v-icon>
                 </v-btn>
                 </v-col>
@@ -162,7 +172,7 @@
                         <span>Total</span>
                         <v-text-field v-model="total" readonly />
                      </p>   
-                    <v-btn block tile @click="save">
+                    <v-btn block tile :disabled="$v.$invalid" @click="save">
                         <i class="fa fa-save">&nbsp; </i> 
                         SAVE
                     </v-btn>
@@ -176,12 +186,16 @@
 </template>
 
 <script>
+
+import moment from 'moment';
 import Api from '../../service/api.js';
+import { required, minLength, minValue, decimal,integer, numeric } from 'vuelidate/lib/validators'
+
 export default {
     data: () => ({
         index : 0,
         distributors:null,
-        distributor:null,
+        // distributor:null,
         products:null,
         stocks:[],
 
@@ -190,12 +204,13 @@ export default {
         stock:{
             reference:null,
             total:0,
-            date:null,
+            date:moment().format("YYYY-MM-DD"),
+            distributor:{},
             distributor_id:null,
             stock_items:[{
-                product:null,
+                product:{},
                 product_id:null,
-                quantity:0,
+                quantity:1,
                 unit_price:1
             }]
         }
@@ -214,24 +229,67 @@ export default {
     watch:{
         index:function(){
           console.log(this.index);
-       },
-      
-            
+       },     
     },
+
+    validations:{
+        stock:{
+            distributor:{
+                required
+            },
+            stock_items:{
+                required,
+                $each:{
+                    product:{
+                        required
+                    },
+                    quantity:{
+                        required,
+                        integer,
+                        minValue:minValue(1)
+                    }
+                }
+            }
+        },
+        
+    },
+
     computed:{
-       get_distributor_id:function(){
-           if(this.distributor != null){
-           this.stock.distributor_id = this.distributor.id
-           return this.stock.distributor_id
-           }
-       },
+
+        distributorErrors(){
+            const errors = [];
+
+            if(!this.$v.stock.distributor.$dirty) return errors;
+            !this.$v.stock.distributor.required &&
+                errors.push("distributor is required*")
+            return errors
+        },
+        productErrors(){
+            const errors = [];
+            if(!this.$v.stock.stock_items.$each[this.index].product.$dirty) return errors;
+                !this.$v.stock.stock_items.$each[this.index].product.required &&
+                errors.push("Select a product *")
+            return errors
+        },
+        quantityErrors(){
+             const errors = [];
+            if(!this.$v.stock.stock_items.$each[this.index].quantity.$dirty) return errors;
+            !this.$v.stock.stock_items.$each[this.index].quantity.required &&
+                errors.push("Quantity is required *")
+            !this.$v.stock.stock_items.$each[this.index].quantity.integer &&
+                errors.push("Invalid input *")
+            !this.$v.stock.stock_items.$each[this.index].quantity.minValue &&
+                errors.push("minimum value of one(1) *")
+            return errors
+        },
+      
         total: function () {
             let sum = 0;
          
             if ( this.stock.stock_items.length > 0 ){
                 // console.log(this.stock.stock_items.length);
                 for (let stock_item of this.stock.stock_items) {
-                    sum +=  (stock_item.quantity * stock_item.stock_price);
+                    sum +=  (stock_item.quantity * stock_item.product['stock_price']);
                     this.stock.total = parseFloat(sum.toFixed(2));
                 }
             } else {
@@ -250,13 +308,14 @@ export default {
     },
     methods:{
         
-        add_row(){
+         add_row(){
+            // this.fields.push({
             this.stock.stock_items.push({
-            product_id: null,
-            product: null,
+            // product_id: null,
+            product:{} ,
             unit_price: 0,
             quantity: 1,
-            stock_price:null
+            // invoice_price:null
          })
         },
         remove_stock_item(index) {
@@ -266,18 +325,30 @@ export default {
             this.index = parseInt(index);
         },
         async save(){
-             this.$set(this.stock,'distributor_id',this.distributor.id);
+            this.$v.$touch();
+            if(!this.$v.$invalid){
 
-             let response = await Api().post(`/stocks`,this.stock);
-             this.stock.id = response.data.id
-            console.log(response)
-             this.stocks.unshift(this.stock) 
-            this.$router.push({
-                name:'showStock',
-                params:{
-                    id:response.data.id
+                this.$set(this.stock,'distributor_id',this.stock.distributor.id);
+
+                for(let i = 0; i < this.stock.stock_items.length; i++){
+                    this.$set(this.stock.stock_items[i],'product_id'
+                                ,this.stock.stock_items[i].product.id);
                 }
-            })
+                console.log(this.stock)
+                // this.$set(this.stock,'distributor_id',this.distributor.id);
+
+                let response = await Api().post(`/stocks`,this.stock);
+                this.stock.id = response.data.id
+                console.log(this.stock.id)
+                this.stocks.unshift(this.stock) 
+                this.$router.push({
+                    name:'showStock',
+                    params:{
+                        id:response.data.id
+                    }
+                })
+            }
+             
         
         }
     

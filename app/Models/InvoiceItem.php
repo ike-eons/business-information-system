@@ -7,9 +7,7 @@ use App\Models\Product;
 
 class InvoiceItem extends Model
 {
-    protected $fillable = [
-        'product_id', 'unit_price', 'quantity'
-    ];
+    protected $guarded = [];
 
     public function product()
     {

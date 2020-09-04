@@ -26,6 +26,7 @@ Route::prefix('/user')->group( function(){
         Route::get('/all','Admin\UserController@index');
         Route::get('/currentUser','Admin\UserController@currentUser');
         Route::get('/inventory', 'API\InventoryController@index');
+        Route::get('/all_inventory', 'API\InventoryController@all');
         Route::get('/transactions', 'API\InventoryController@transactions');
         Route::get('/customer_products/{id}',
                     'API\CustomerController@get_products_from_invoice_items');

@@ -5,9 +5,26 @@
       <v-data-table
         :headers="headers"
         :items="transactions"
+        :items-per-page="5"
         sort-by="text"
         class="elevation-5 strip-table"
       >
+      <!-- item table -->
+        <template v-slot:item="{ item }">
+              <tr>
+                  <td>
+                      <!-- <router-link :to="`/invoices/${item.id}`"> -->
+                        {{item.invoice_or_stock}}
+                      <!-- </router-link> -->
+                  </td>
+                  <td>{{ item.number}}</td>
+                  <td>GH¢ {{item.amount|formatMoney}}</td>
+                  <td>{{getHumanDate(item.date)}}</td>
+              </tr>
+          </template>
+
+      <!-- item table end -->
+
         <template v-slot:top>
           <v-toolbar flat elevation-1 color="teal darken-1" dark class="lighten-2">
             <v-toolbar-title >Transaction Timeline</v-toolbar-title>
@@ -20,11 +37,11 @@
           </v-toolbar>
         </template>
         <template v-slot:no-data>
-          <v-btn color="primary" @click="GET_BRANDS">Reset</v-btn>
+          <v-btn color="teal" class="white--text" @click="GET_BRANDS">Reset</v-btn>
         </template>
       </v-data-table>
-      </v-col>
-    </v-row>  
+    </v-col>
+  </v-row>  
 </v-container>
 </template>
 
@@ -32,6 +49,7 @@
 
 import {mapGetters, mapActions} from "vuex";
 import Api from '../../service/api.js'
+import moment from 'moment'
 
   export default {
     data: () => ({
@@ -45,7 +63,7 @@ import Api from '../../service/api.js'
           value: 'invoice_or_stock',
         },
         {
-          text: 'ID',
+          text: 'Transaction ID',
           align: 'left',
           sortable: true,
           value: 'number',
@@ -83,13 +101,18 @@ import Api from '../../service/api.js'
 
     methods: {
       ...mapActions("brand",["fetch_brands","create_brand","delete_brand","edit_brand"]),
+
+       getHumanDate : function (date) {
+            // return moment(date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+            return moment(date, "YYYYMMDD").fromNow();
+        }
     },
   }
 </script>
 
 <style scoped>
-  .v-data-table table tr:nth-of-type(2n) {
+  /* .v-data-table table tr:nth-of-type(2n) {
     background: lightslategrey;
-  }
+  } */
     
 </style>

@@ -50,7 +50,7 @@ class InvoiceController extends Controller
         foreach($request->invoice_items as $item) {
            $invoiceItem = new InvoiceItem();
            $invoiceItem->invoice_id = $invoice->id;
-           $invoiceItem->product_id = $item['id'];
+           $invoiceItem->product_id = $item['product_id'];
            $invoiceItem->unit_price = $item['unit_price'];
            $invoiceItem->quantity = $item['quantity'];
            $invoiceItem->save();
@@ -59,8 +59,17 @@ class InvoiceController extends Controller
 
         $counter->increment('value');
 
-        // UPDATE INVENTORY ON INVOICE GENERATED
+        //CREATE PAYMENT TABLE FOR INVOICE
+         DB::table('payments')->insert([
+            'invoice_id' => $invoice->id,
+            'customer_id' => $request->customer_id,
+            'amount_paid' => $request->amount_paid,
+            'date'  => $request->date
+            // 'create_at' => Carbon::now()
+        ]);
 
+
+        // UPDATE INVENTORY ON INVOICE GENERATED
         foreach( $invoice->invoice_items as $item)
         {
             DB::table('inventories')->where('product_id',$item['product_id'])->update([
@@ -69,6 +78,8 @@ class InvoiceController extends Controller
             ]);
 
         }
+
+        
 
         //UPDATE TRANSACTIONS TABLE
         DB::table('transactions')->insert([

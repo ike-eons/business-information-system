@@ -10,7 +10,7 @@
             
         <v-spacer></v-spacer>
        <v-col cols="12">
-            <v-card width="400" class="mx-auto" elevation-11>
+            <v-card width="450" class="mx-auto" elevation-11>
                 <v-form>
                 <v-toolbar color="teal" dark>
                   <v-card-title>
@@ -64,11 +64,15 @@
                       </div>
                     
                 </v-card-text>
-                <v-divider></v-divider>
+                <v-divider ></v-divider>
                 <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="teal" dark @click="login" :disabled="$v.$invalid">LOGIN</v-btn>
-                    <v-spacer></v-spacer>
+                    <v-row class="mt-n5">
+                        <v-col md-3></v-col>
+                        <v-col md-6>
+                            <v-btn block color="teal" dark @click="login" :disabled="$v.$invalid">LOGIN</v-btn>
+                        </v-col>
+                        <v-col md-3></v-col>
+                    </v-row>
                 </v-card-actions>
                 </v-form>
             </v-card>

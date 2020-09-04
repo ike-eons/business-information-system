@@ -29,6 +29,13 @@ class InventoryController extends Controller
 
     }
 
+    public function all()
+    {
+        $inventories = Inventory::with(['product'])->get();
+
+        return ['inventories' => $inventories];
+    }
+
     public function transactions()
     {
         $transactions = Transaction::latest()->get();

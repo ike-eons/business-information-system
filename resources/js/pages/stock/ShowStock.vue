@@ -100,7 +100,9 @@ import Api from '../../service/api.js';
 export default {
   data(){
     return{
-      stock:{},
+      stock:{
+        distributor:{}
+      },
     }
   },
   created(){
