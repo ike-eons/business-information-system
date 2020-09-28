@@ -2,12 +2,15 @@
 <v-container class="my-5">
   <v-row>
     <v-col md="12">
+      <!-- Brand Table -->
       <v-data-table
         :headers="headers"
         :items="brands"
         sort-by="text"
         class="elevation-1 strip-table"
       >
+      <!-- end of brand table -->
+
         <template v-slot:top>
           <v-toolbar flat elevation-1 color="teal darken-1" dark class="lighten-2">
             <v-toolbar-title ><v-icon>spa</v-icon> Brands</v-toolbar-title>
@@ -45,19 +48,6 @@
                           @blur="$v.editedItem.name.$touch()"
                           :error-messages="nameErrors"
                         />
-                        <!-- name errors -->
-                         <!-- <div v-if="$v.editedItem.name.$error" class="error-margin">
-                            <small class="errorMessage red--text" v-if="!$v.editedItem.name.required">
-                                Brand name is required*
-                            </small>
-                            <small class="errorMessage red--text" v-if="!$v.editedItem.name.minLength">
-                                Brand length must be atleast 3 characters*
-                            </small>
-                            <small class="errorMessage red--text" v-if="!$v.editedItem.name.uniqueName">
-                                Brand name already Exist*
-                            </small>
-
-                        </div> -->
                       </v-col>
                       
                     </v-row>

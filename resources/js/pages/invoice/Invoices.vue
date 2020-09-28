@@ -31,7 +31,7 @@
 
           <template v-slot:top>
           <v-toolbar flat elevation-1 color="teal" class="white--text">
-            <v-toolbar-title ><v-icon color="white">content_copy</v-icon> GENERATED</v-toolbar-title>
+            <v-toolbar-title ><v-icon color="white">content_copy</v-icon> GENERATED INVOICES</v-toolbar-title>
             <v-divider
               class="mx-5"
               inset
@@ -44,7 +44,7 @@
             </v-btn> -->
             <v-btn  class="mb-2 teal--text" color="white" @click="on">
                   <i class="fa fa-plus" aria-hidden="true"></i>
-                    <span>New Customer</span>
+                    <span>New Invoice</span>
                 </v-btn>
           </v-toolbar>
           </template>

@@ -74,6 +74,7 @@
                   </v-col>
                   <v-col cols="4">
                     <p class="h5">Total: GH¢{{invoice.total | formatMoney}}</p>
+                     <p class="h5">Total: GH¢{{invoice.total | formatMoney}}</p>
                   </v-col>
                 </v-row>
 

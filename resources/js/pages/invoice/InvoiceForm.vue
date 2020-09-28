@@ -205,9 +205,68 @@
                      </div>
                      <v-divider></v-divider> 
                      <div class="mt-2">
-                        <v-btn block tile color="success" class="white--text" :disabled="$v.$invalid" @click="onSave">
-                            <i class="fa fa-save">&nbsp; </i> 
+                        <v-btn  tile color="primary" class="white--text"
+                            :disabled="$v.$invalid" @click="dialog = true">
+                            <!-- <i class="fa fa-save">&nbsp; </i>  -->
+                            <v-icon>mdi-eye</v-icon>
                             Preview
+                        </v-btn>
+
+                        <!-- Preview and preview button -->
+                        <template :slot="top">
+                            <v-dialog v-model="dialog" max-width="800px">
+                            <template v-slot:activator="{ on }">
+                                <v-btn  ctile color="primary" class="white--text"
+                                    :disabled="$v.$invalid" v-on="on">
+                                    <v-icon>mdi-eye</v-icon>
+                                    Preview
+                                </v-btn>
+                            </template>
+
+                            <v-card > 
+                                <v-card-title>
+                                <span class="headline">Invoice Preview</span>
+                                </v-card-title>
+
+                                <v-card-text>
+                                <v-container>
+                                    
+                                    <v-row dense>
+                                        <v-col cols="1">#</v-col>
+                                        <v-col cols="7">Item Description</v-col>
+                                        <v-col cols="2">Quantity</v-col>
+                                        <v-col cols="2">Unit Price</v-col>
+                                    </v-row>
+
+                                    <v-divider class="py-n5"></v-divider>
+
+                                    <v-row v-for="(item,index) in invoice.invoice_items" :key="item.id" class="py-n2">
+                                        <v-col cols="1">{{index+1}}</v-col>
+                                        <v-col cols="7">{{item.product.description}}</v-col>
+                                        <v-col cols="2">{{item.quantity}}</v-col>
+                                        <v-col cols="2">{{item.unit_price | formatMoney}}</v-col>
+                                    </v-row>
+
+                                    <v-divider></v-divider>
+                                    
+                                </v-container>
+                                </v-card-text>
+
+                                <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="error darken-1" text @click="close">Cancel</v-btn>
+                                <v-btn color="teal darken-1" :disabled="$v.$invalid" text @click="save">Print</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                            
+                            </v-dialog>
+                        </template>
+
+            <!-- end of preview and preview button -->
+                        
+                        <v-btn tile color="success" class="white--text" :disabled="$v.$invalid" @click="onSave">
+                            <i class="fa fa-save">&nbsp; </i> 
+                            Print
                         </v-btn>
                     </div>
                     
@@ -234,6 +293,7 @@ export default {
         customers:[],
         // customer:{},
         products:[],
+        dialog:false,
 
         // errors:{},
         date:moment().format("YYYY-MM-DD"),
@@ -298,6 +358,10 @@ export default {
                 maxValue(value){
                     return value <= this.invoice.total 
                 }
+            },
+            uniqueProduct(id){
+                if(id =="") return true
+                let product = this.invoice.invoice_items
             },
             invoice_items:
             {
@@ -402,31 +466,61 @@ export default {
             this.index = parseInt(index);
         },
         async onSave(){
-                this.$v.$touch()
-                    if(!this.$v.$invalid){
-                        this.$set(this.invoice,'customer_id',this.invoice.customer.id);
+            this.$v.$touch()
+                if(!this.$v.$invalid){
+                    this.$set(this.invoice,'customer_id',this.invoice.customer.id);
 
-                        for(let i = 0; i < this.invoice.invoice_items.length; i++){
-                            this.$set(this.invoice.invoice_items[i],'product_id'
-                                        ,this.invoice.invoice_items[i].product.id);
-                        }
+                    for(let i = 0; i < this.invoice.invoice_items.length; i++){
+                        this.$set(this.invoice.invoice_items[i],'product_id'
+                                    ,this.invoice.invoice_items[i].product.id);
+                    }
 
-                    let response = await Api().post(`/invoices`,this.invoice);
-                    this.invoice.id = response.data.invoice.id
-                    this.$v.invoice.$reset();
-                    console.log(this.invoice)
-                    this.invoices.unshift(this.invoice) 
+                let response = await Api().post(`/invoices`,this.invoice);
+                this.invoice.id = response.data.invoice.id
+                this.$v.invoice.$reset();
+                console.log(this.invoice)
+                this.invoices.unshift(this.invoice) 
+                this.$router.push('/invoices')
 
-                    this.$router.push({
-                        name:'showInvoice',
-                        params:{
-                            id:this.invoice.id
-                        }
-                    })
-                }
+                // this.$router.push({
+                //     name:'showInvoice',
+                //     params:{
+                //         id:this.invoice.id
+                //     }
+                // })
+            }
                 
             
         },
+         async onPreview(){
+            this.$v.$touch()
+                if(!this.$v.$invalid){
+                    this.$set(this.invoice,'customer_id',this.invoice.customer.id);
+
+                    for(let i = 0; i < this.invoice.invoice_items.length; i++){
+                        this.$set(this.invoice.invoice_items[i],'product_id'
+                                    ,this.invoice.invoice_items[i].product.id);
+                    }
+
+                // let response = await Api().post(`/invoices`,this.invoice);
+                // this.invoice.id = response.data.invoice.id
+                // this.$v.invoice.$reset();
+                console.log(this.invoice)
+                this.dialog = true
+                // this.invoices.unshift(this.invoice) 
+                // this.$router.push('/invoices/preview')
+
+                // this.$router.push({
+                //     name:'showInvoice',
+                //     params:{
+                //         id:this.invoice.id
+                //     }
+                // })
+            }
+                
+            
+        },
+
 
         validation(){
         }

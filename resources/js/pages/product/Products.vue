@@ -29,7 +29,7 @@
               </template>
 
               <!-- Form text field  -->
-              <v-card > 
+              <v-card> 
                 <v-card-title>
                   <span class="headline">{{ formTitle }}</span>
                 </v-card-title>

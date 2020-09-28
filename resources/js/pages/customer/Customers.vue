@@ -304,7 +304,7 @@ import { required, minLength,numeric } from 'vuelidate/lib/validators'
           Object.assign(this.customers[this.editedIndex], this.editedItem);
           // this.edit_customer(this.editedItem);
         } else {
-            this.$v.touch();
+            this.$v.$touch();
             if(!this.$v.$invalid){
             let response = await Api().post(`/customers`,this.editedItem);
             this.editedItem.id = response.data.customer.id

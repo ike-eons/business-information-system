@@ -14,6 +14,7 @@ import CustomerDetail from '../pages/customer/CustomerDetail';
 import Distributors from '../pages/distributor/Distributors';
 import Products from '../pages/product/Products';
 import Invoices from '../pages/invoice/Invoices';
+import InvoicePreview from '../pages/invoice/InvoicePreview';
 import Stocks from '../pages/stock/Stocks';
 import StockForm from '../pages/stock/StockForm';
 import ShowStock from '../pages/stock/ShowStock';
@@ -73,6 +74,16 @@ export default new Router({
         path:'/invoices/:id',
         component:ShowInvoice,
         name:'showInvoice'
+    },
+    {
+        path:'/invoices/preview',
+        component:InvoicePreview,
+        name:'InvoicePreview',
+        props:{
+            invoice:{
+                
+            }
+        }
     },
    
     

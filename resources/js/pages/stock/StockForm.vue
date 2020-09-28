@@ -344,7 +344,7 @@ export default {
                 this.$router.push({
                     name:'showStock',
                     params:{
-                        id:response.data.id
+                        id:this.stock.id
                     }
                 })
             }
